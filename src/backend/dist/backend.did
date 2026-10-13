@@ -1,0 +1,188 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfile = record {displayName: text;};
+type TournamentStatus = 
+ variant {
+   akanDatang;
+   berlangsung;
+   selesai;
+ };
+type TournamentInput = 
+ record {
+   description: text;
+   format: text;
+   game: text;
+   name: text;
+   prizePool: text;
+   schedule: vec ScheduleEntry;
+   status: TournamentStatus;
+ };
+type TournamentId = nat;
+type Tournament = 
+ record {
+   createdAt: Timestamp;
+   description: text;
+   format: text;
+   game: text;
+   id: TournamentId;
+   name: text;
+   prizePool: text;
+   schedule: vec ScheduleEntry;
+   status: TournamentStatus;
+   teamIds: vec TeamId;
+   updatedAt: Timestamp;
+ };
+type Timestamp = nat;
+type TeamInput = 
+ record {
+   description: text;
+   game: text;
+   logoUrl: text;
+   name: text;
+ };
+type TeamId = nat;
+type Team = 
+ record {
+   createdAt: Timestamp;
+   description: text;
+   game: text;
+   id: TeamId;
+   logoUrl: text;
+   name: text;
+   roster: vec Player;
+   tournamentIds: vec TournamentId;
+   updatedAt: Timestamp;
+ };
+type ScheduleEntry = 
+ record {
+   caption: text;
+   endAt: Timestamp;
+   id: nat;
+   startAt: Timestamp;
+ };
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Player = 
+ record {
+   id: nat;
+   name: text;
+   role: text;
+ };
+type MatchStatus = 
+ variant {
+   berlangsung;
+   dijadwalkan;
+   selesai;
+ };
+type MatchInput = 
+ record {
+   round: text;
+   scheduledAt: opt Timestamp;
+   teamAId: opt TeamId;
+   teamBId: opt TeamId;
+ };
+type MatchId = nat;
+type Match = 
+ record {
+   id: MatchId;
+   round: text;
+   scheduledAt: opt Timestamp;
+   scoreA: opt nat;
+   scoreB: opt nat;
+   status: MatchStatus;
+   teamAId: opt TeamId;
+   teamBId: opt TeamId;
+   tournamentId: TournamentId;
+   updatedAt: Timestamp;
+   winnerId: opt TeamId;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  addTeamToTournament: (id: TournamentId, teamId: TeamId) -> (opt Tournament);
+  addTournamentToTeam: (id: TeamId, tournamentId: TournamentId) -> (opt Team);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createMatch: (tournamentId: TournamentId, input: MatchInput) -> (Match);
+  createTeam: (input: TeamInput) -> (Team);
+  createTournament: (input: TournamentInput) -> (Tournament);
+  deleteMatch: (id: MatchId) -> (bool);
+  deleteTeam: (id: TeamId) -> (bool);
+  deleteTournament: (id: TournamentId) -> (bool);
+  execute: (qJson: text) -> (Result) query;
+  getApiDoc: () -> (text) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getMatch: (id: MatchId) -> (opt Match) query;
+  getTeam: (id: TeamId) -> (opt Team) query;
+  getTournament: (id: TournamentId) -> (opt Tournament) query;
+  getUserProfile: (user: principal) -> (opt UserProfile) query;
+  isCallerAdmin: () -> (bool) query;
+  listMatches: (tournamentId: TournamentId) -> (vec Match) query;
+  listTeams: () -> (vec Team) query;
+  listTournaments: () -> (vec Tournament) query;
+  recordScore: (id: MatchId, scoreA: nat, scoreB: nat) -> (opt Match);
+  removeTeamFromTournament: (id: TournamentId, teamId: TeamId) ->
+   (opt Tournament);
+  removeTournamentFromTeam: (id: TeamId, tournamentId: TournamentId) ->
+   (opt Team);
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  schema: () -> (text) query;
+  setMatchStatus: (id: MatchId, status: MatchStatus) -> (opt Match);
+  setMatchWinner: (id: MatchId, winnerId: TeamId) -> (opt Match);
+  setRoster: (id: TeamId, roster: vec Player) -> (opt Team);
+  setTournamentStatus: (id: TournamentId, status: TournamentStatus) ->
+   (opt Tournament);
+  updateMatch: (id: MatchId, input: MatchInput) -> (opt Match);
+  updateTeam: (id: TeamId, input: TeamInput) -> (opt Team);
+  updateTournament: (id: TournamentId, input: TournamentInput) ->
+   (opt Tournament);
+}

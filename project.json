@@ -1,0 +1,19 @@
+{
+  "overview": "Platform manajemen esports berbahasa Indonesia untuk mengelola turnamen, tim, dan pertandingan.",
+  "features": [
+    "Jelajahi katalog turnamen dengan pencarian dan filter",
+    "Lihat detail turnamen termasuk jadwal dan bagan pertandingan",
+    "Kelola tim dengan roster pemain dan unggah logo",
+    "Panel admin untuk membuat dan mengubah turnamen, tim, dan pertandingan",
+    "Masuk dengan Internet Identity; pengguna pertama menjadi admin"
+  ],
+  "category": "esports-management",
+  "tags": [
+    "esports",
+    "tournaments",
+    "teams",
+    "admin",
+    "indonesian"
+  ],
+  "last_updated": "2026-10-13T01:07:42.824Z"
+}

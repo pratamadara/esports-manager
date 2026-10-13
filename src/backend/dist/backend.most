@@ -1,0 +1,168 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type MatchId__543136929 = Nat;
+type MatchStatus__288828669 = {#berlangsung; #dijadwalkan; #selesai};
+type MatchStatus__427144453 = {#berlangsung; #dijadwalkan; #selesai};
+type Match__66421370 =
+  {
+    id : MatchId__543136929;
+    round : Text;
+    scheduledAt : ?Timestamp__301639476;
+    scoreA : ?Nat;
+    scoreB : ?Nat;
+    status : MatchStatus__427144453;
+    teamAId : ?TeamId__900592005;
+    teamBId : ?TeamId__900592005;
+    tournamentId : TournamentId__389260004;
+    updatedAt : Timestamp__301639476;
+    winnerId : ?TeamId__900592005
+  };
+type Match__84033613 =
+  {
+    id : Nat;
+    round : Text;
+    scheduledAt : ?Nat;
+    scoreA : ?Nat;
+    scoreB : ?Nat;
+    status : MatchStatus__288828669;
+    teamAId : ?Nat;
+    teamBId : ?Nat;
+    tournamentId : Nat;
+    updatedAt : Nat;
+    winnerId : ?Nat
+  };
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__769816496 =
+  {
+    accessControlState : AccessControlState__201339279;
+    matches : Map__230067015<Nat, Match__84033613>;
+    profiles : Map__230067015<Principal, UserProfile__429904917>;
+    state :
+      {
+        var nextMatchId : Nat;
+        var nextTeamId : Nat;
+        var nextTournamentId : Nat
+      };
+    teams : Map__230067015<Nat, Team__921126796>;
+    tournaments : Map__230067015<Nat, Tournament__852420240>
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type OldActor__512397517 = {};
+type Player__685745394 = {id : Nat; name : Text; role : Text};
+type Player__718463068 = {id : Nat; name : Text; role : Text};
+type ScheduleEntry__368179386 =
+  {
+    caption : Text;
+    endAt : Timestamp__301639476;
+    id : Nat;
+    startAt : Timestamp__301639476
+  };
+type ScheduleEntry__885715889 =
+  {caption : Text; endAt : Nat; id : Nat; startAt : Nat};
+type TeamId__900592005 = Nat;
+type Team__921126796 =
+  {
+    createdAt : Nat;
+    description : Text;
+    game : Text;
+    id : Nat;
+    logoUrl : Text;
+    name : Text;
+    roster : [Player__685745394];
+    tournamentIds : [Nat];
+    updatedAt : Nat
+  };
+type Team__944861453 =
+  {
+    createdAt : Timestamp__301639476;
+    description : Text;
+    game : Text;
+    id : TeamId__900592005;
+    logoUrl : Text;
+    name : Text;
+    roster : [Player__718463068];
+    tournamentIds : [TournamentId__389260004];
+    updatedAt : Timestamp__301639476
+  };
+type Timestamp__301639476 = Nat;
+type TournamentId__389260004 = Nat;
+type TournamentStatus__19104519 = {#akanDatang; #berlangsung; #selesai};
+type TournamentStatus__831356115 = {#akanDatang; #berlangsung; #selesai};
+type Tournament__116332582 =
+  {
+    createdAt : Timestamp__301639476;
+    description : Text;
+    format : Text;
+    game : Text;
+    id : TournamentId__389260004;
+    name : Text;
+    prizePool : Text;
+    schedule : [ScheduleEntry__368179386];
+    status : TournamentStatus__831356115;
+    teamIds : [TeamId__900592005];
+    updatedAt : Timestamp__301639476
+  };
+type Tournament__852420240 =
+  {
+    createdAt : Nat;
+    description : Text;
+    format : Text;
+    game : Text;
+    id : Nat;
+    name : Text;
+    prizePool : Text;
+    schedule : [ScheduleEntry__885715889];
+    status : TournamentStatus__19104519;
+    teamIds : [Nat];
+    updatedAt : Nat
+  };
+type UserProfile__190304746 = {displayName : Text};
+type UserProfile__429904917 = {displayName : Text};
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "00000000_000000" : OldActor__512397517 -> NewActor__769816496
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable matches :
+    {
+      var root : Node__204828119<MatchId__543136929, Match__66421370>;
+      var size : Nat__227979830
+    };
+  stable profiles :
+    {
+      var root : Node__204828119<Principal, UserProfile__190304746>;
+      var size : Nat__227979830
+    };
+  stable state :
+    {var nextMatchId : Nat; var nextTeamId : Nat; var nextTournamentId : Nat};
+  stable teams :
+    {
+      var root : Node__204828119<TeamId__900592005, Team__944861453>;
+      var size : Nat__227979830
+    };
+  stable tournaments :
+    {
+      var root :
+        Node__204828119<TournamentId__389260004, Tournament__116332582>;
+      var size : Nat__227979830
+    }
+};
